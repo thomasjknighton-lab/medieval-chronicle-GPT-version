@@ -1,4 +1,4 @@
-export const VERSION=5;
+export const VERSION=6;
 export const STORAGE_KEY='medieval-chronicle-stage1-v1';
 export const GEOGRAPHIES=[
  {id:'river',name:'River Valley',region:'Thames or Severn river country',start:{food:4,population:3,wealth:3,stability:2},detail:'A river winds past fertile fields. Waterways bring opportunities and occasional disputes over access.'},
@@ -59,16 +59,32 @@ export const FIRST_SOURCE={
 export const NAME_SUGGESTIONS={farmer:['Eadric','Wulfstan','Ælfgifu','Leofwyn'],craft:['Godric','Eadgyth','Oswald','Wulfric'],religious:['Cuthbert','Eadburh','Æthelred','Wynflæd']};
 export function clamp(n){return Math.max(0,Math.min(5,n));}
 export function applyDelta(resources,delta){const next={...resources},actual={};for(const key of ['food','population','wealth','stability']){const before=next[key];next[key]=clamp(before+(delta[key]||0));actual[key]=next[key]-before;}return {resources:next,actual};}
-export function createDraft(random=Math.random){const index=Math.min(3,Math.floor(random()*4));return {version:VERSION,id:(globalThis.crypto?.randomUUID?.()||String(Date.now())+'-'+String(Math.random()).slice(2)),stage:'setup',turn:0,sourceObservation:'',eraReflection:'',highReflection:'',highJustification:'',normanSeen:false,survival:{raid:null,norman:null,attempts:0,checkpoint:null,crisis:null,crisisEvent:null,log:[],scarcity:0,upkeep:[]},geography:GEOGRAPHIES[index].id,village:'',names:{farmer:'',craft:'',religious:''},priority:null,resources:null,selected:null,decision:null,chronicle:[],createdAt:new Date().toISOString()};}
+export function createDraft(random=Math.random){const index=Math.min(3,Math.floor(random()*4));return {version:VERSION,id:(globalThis.crypto?.randomUUID?.()||String(Date.now())+'-'+String(Math.random()).slice(2)),stage:'setup',turn:0,sourceObservation:'',eraReflection:'',highReflection:'',highJustification:'',normanSeen:false,survival:{raid:null,norman:null,attempts:0,checkpoint:null,crisis:null,crisisEvent:null,log:[],scarcity:0,upkeep:[],harvestBonus:0},geography:GEOGRAPHIES[index].id,village:'',names:{farmer:'',craft:'',religious:''},priority:null,resources:null,selected:null,decision:null,chronicle:[],createdAt:new Date().toISOString()};}
 export function startVillage(state,{village,names,priority}){if(state.stage!=='setup')throw Error('Village already started');const geo=GEOGRAPHIES.find(g=>g.id===state.geography),founding=PRIORITIES.find(p=>p.id===priority);if(!geo||!founding)throw Error('Invalid setup');const updated=applyDelta(geo.start,founding.delta);return {...state,stage:'decision',turn:0,village,names:{...names},priority,resources:updated.resources,selected:null,chronicle:[{kind:'founding',year:920,title:'Village founded',text:`${village} began in ${geo.region}. Its founding priority was ${founding.name}.`,delta:updated.actual}]};}
-// Scarcity is a seasonal cost, not an arbitrary deduction every time the player clicks.
-// The selected turn and earlier investments determine exposure. It is shown before confirmation.
-export function seasonalPressure(state,turn){
- if(turn===0)return {delta:{},description:'The first harvest establishes the village’s initial reserves.'};
- const r=state.resources,food=(turn===1||turn===2||turn===4||turn===5)?-1:0;
- const extra=(r.food<=1&&turn>=1)?-1:0;
- const wealth=(turn===5&&r.wealth<=1)?-1:0;
- return {delta:{food:food+extra,wealth},description:food?'Households consume stored food between seasons. Very low stores increase the strain.':'The village has a period to rebuild its stores.'};
+// Each decision resolves one representative agricultural cycle, not every year in the interval.
+// A normal harvest replaces normal consumption; investments create a lasting surplus.
+export function harvestCycle(state,turn,investment=0){
+ const bonus=(state.survival?.harvestBonus||0)+investment;
+ const production=2+bonus;
+ const consumption=2;
+ // A difficult season is announced before the decision; no hidden random drain.
+ const poorHarvest=(turn===2||turn===5)?1:0;
+ const net=production-consumption-poorHarvest;
+ return {production,consumption,poorHarvest,net,bonus,description:`Harvest +${production}, household use −${consumption}${poorHarvest?`, difficult season −${poorHarvest}`:''}. Net ${net>=0?'+':''}${net} Food.`};
+}
+export function decisionDelta(state,id){
+ const turn=state.turn??0;
+ const choice=CHAPTER_DECISIONS[turn]?.choices.find(c=>c.id===id);
+ if(!choice)throw Error('Invalid choice');
+ if(turn===3&&id==='D')return ({river:{wealth:-1},coast:{wealth:-1},wood:{},upland:{wealth:1}})[state.geography];
+ return {...choice.delta,...(turn===3&&['A','B'].includes(id)?{food:0}: {})};
+}
+export function investmentGain(state,id){return state.turn===3&&(['A','B'].includes(id)||(id==='D'&&state.geography!=='upland'))?1:0;}
+export function previewDecision(state,id){
+ const delta=decisionDelta(state,id),investment=investmentGain(state,id),harvest=harvestCycle(state,state.turn,investment);
+ const combined={...delta,food:(delta.food||0)+harvest.net};
+ const result=applyDelta(state.resources,combined);
+ return {delta,investment,harvest,combined,projected:result.resources,actual:result.actual,warning:harvest.description};
 }
 export function crisisReason(r){
  if(r.population===0)return 'Too few households remain to maintain the settlement.';
@@ -78,11 +94,6 @@ export function crisisReason(r){
  return null;
 }
 export function warningLevel(r){return crisisReason(r)?'CRISIS':Object.values(r).some(v=>v<=1)?'AT RISK':'FUNCTIONING';}
-export function previewDecision(state,id){
- const choice=CHAPTER_DECISIONS[state.turn]?.choices.find(c=>c.id===id);if(!choice)throw Error('Invalid choice');
- const seasonal=seasonalPressure(state,state.turn);
- return {seasonal,warning:seasonal.delta.food<0?'Seasonal food use will follow this decision.':'No seasonal food cost this turn.'};
-}
 export function confirmChoice(state,id){
  if(state.stage!=='decision')throw Error('Not at a decision');
  const turn=state.turn??0, d=CHAPTER_DECISIONS[turn];if(!d)throw Error('No decision available');
@@ -101,18 +112,19 @@ export function confirmChoice(state,id){
   else if(raid==='C')localOutcome+=' Households remember protecting their grain, but that did not settle who could demand their labor.';
   else localOutcome+=' Neighboring villages share memories of cooperation, but their customs and landholders differ.';
  }
- const seasonal=seasonalPressure(state,turn);
- const effect=applyDelta(state.resources,{...delta,food:(delta.food||0)+(seasonal.delta.food||0),wealth:(delta.wealth||0)+(seasonal.delta.wealth||0)});
+ const preview=previewDecision(state,id);
+ const effect=applyDelta(state.resources,preview.combined);
  const first=state.chronicle.find(c=>c.kind==='decision');
  const echo=turn===1?({A:'Your earlier shared grain stores give villagers some confidence in the negotiation.',B:'The earlier repairs remind households of the value of maintaining common arrangements.',C:'The landholder remembers the village’s earlier fulfillment of obligations.',D:'The shared work organized twenty years ago provides a model for acting together.'}[first?.choice]||'Earlier village choices remain part of local memory.'):
  turn===2?({A:'Earlier negotiation has given representatives experience speaking for the village.',B:'Villagers remember their defense of customary claims.',C:'Households remember the cost of accepting stricter terms.',D:'The village can draw on its established habit of organizing together.'}[state.chronicle.find(c=>c.kind==='decision'&&c.year===940)?.choice]||'Past choices shape the community’s discussion.'):'';
  const normanEcho=turn===3?`After the Norman Conquest of 1066, landholding and lordship changed in many parts of England. In ${state.village}, later generations must navigate new authorities. The consequences varied by region; no single village experience was universal. `:'';
  const highEcho=turn>=3?(() => {const past=state.chronicle.filter(c=>c.kind==='decision');const latest=past.at(-1);const founding=past[0];return ` Earlier choices remain visible: ${latest?.legacy||founding?.legacy||'the village remembers its customs'}`;})():'';
- const outcome=normanEcho+localOutcome+(echo?' '+echo:'')+highEcho+(seasonal.delta.food<0?' '+seasonal.description:'');
- const record={id,title:choice.title,year:d.year,actual:effect.actual,outcome,legacy:localLegacy};
+ if(turn===3&&preview.investment)localOutcome+=' This improvement will increase production in later harvests.';
+ const outcome=normanEcho+localOutcome+(echo?' '+echo:'')+highEcho+' '+preview.harvest.description;
+ const record={id,title:choice.title,year:d.year,actual:effect.actual,outcome,legacy:localLegacy,accounting:{before:state.resources.food,...preview.harvest,decisionFood:preview.delta.food||0,after:effect.resources.food}};
  const reason=turn>0?crisisReason(effect.resources):null;
- const survival={...state.survival,crisis:reason?{event:'decision',reason}:null,crisisEvent:reason?'decision':null,checkpoint:state.survival.checkpoint};
- return {...state,stage:reason?'crisis':'outcome',selected:null,resources:effect.resources,survival,decision:record,chronicle:[...state.chronicle,{kind:'decision',year:d.year,choice:id,title:d.title+' — '+choice.title,text:outcome,legacy:localLegacy,delta:effect.actual}]};
+ const survival={...state.survival,harvestBonus:preview.harvest.bonus,crisis:reason?{event:'decision',reason}:null,crisisEvent:reason?'decision':null,checkpoint:state.survival.checkpoint};
+ return {...state,stage:reason?'crisis':'outcome',selected:null,resources:effect.resources,survival,decision:record,chronicle:[...state.chronicle,{kind:'decision',year:d.year,choice:id,title:d.title+' — '+choice.title,text:outcome,legacy:localLegacy,delta:effect.actual,accounting:record.accounting}]};
 }
 export function withDecisionCheckpoint(state){return {...state,survival:{...state.survival,checkpoint:checkpoint(state,'decision')}};}
 export function finishStage(state){
@@ -134,10 +146,11 @@ export function validateState(s){if(!s||typeof s!=='object'||s.version!==VERSION
 export function formatEffects(actual){const names={food:'Food',population:'Population',wealth:'Wealth',stability:'Stability'};return Object.entries(names).filter(([k])=>actual[k]!==0).map(([k,n])=>`${n} ${actual[k]>0?'+':''}${actual[k]}`).join(' · ')||'No immediate resource change';}
 
 export function migrateState(s){
- if(!s||![1,2,3,4,5].includes(s.version))return s;
- if(s.version===5)return s;
- if(s.version===4){const cp=s.survival?.checkpoint;return {...s,version:5,survival:{...s.survival,scarcity:0,upkeep:[],checkpoint:cp?{...cp,state:{...cp.state,version:5}}:null}};}
- let next={...s,version:5,highReflection:s.highReflection||'',highJustification:s.highJustification||'',normanSeen:!!s.normanSeen,survival:{raid:null,norman:null,attempts:0,checkpoint:null,crisis:null,crisisEvent:null,log:[],scarcity:0,upkeep:[]}};
+ if(!s||![1,2,3,4,5,6].includes(s.version))return s;
+ if(s.version===6)return s;
+ if(s.version===5){return {...s,version:6,survival:{...s.survival,harvestBonus:s.survival?.harvestBonus||0,checkpoint:s.survival?.checkpoint?{...s.survival.checkpoint,state:{...s.survival.checkpoint.state,version:6,survival:{...s.survival.checkpoint.state.survival,harvestBonus:s.survival.checkpoint.state.survival?.harvestBonus||0}}}:null}};}
+ if(s.version===4){const cp=s.survival?.checkpoint;return {...s,version:6,survival:{...s.survival,scarcity:0,upkeep:[],harvestBonus:0,checkpoint:cp?{...cp,state:{...cp.state,version:6}}:null}};}
+ let next={...s,version:6,highReflection:s.highReflection||'',highJustification:s.highJustification||'',normanSeen:!!s.normanSeen,survival:{raid:null,norman:null,attempts:0,checkpoint:null,crisis:null,crisisEvent:null,log:[],scarcity:0,upkeep:[],harvestBonus:0}};
  if(s.version===1){next={...next,turn:0,sourceObservation:'',eraReflection:''};if(s.stage==='complete'){next.stage='decision';next.turn=1;next.decision=null;next.selected=null;}}
  else if(s.version===2&&s.stage==='complete'){next.stage='norman';next.turn=2;next.decision=null;next.selected=null;}
  return next;
