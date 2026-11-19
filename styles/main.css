@@ -1,0 +1,81 @@
+:root{font-family:system-ui,-apple-system,'Segoe UI',sans-serif;color:#26372d;background:#f1efe5;font-synthesis:none}*{box-sizing:border-box}body{margin:0}button,input{font:inherit}button{cursor:pointer}button:focus-visible,input:focus-visible{outline:3px solid #d69c46;outline-offset:3px}button:disabled{opacity:.45;cursor:not-allowed}.skip{position:absolute;left:-9999px;top:0;z-index:50;background:white;padding:12px}.skip:focus{left:8px}.top{background:#233b31;color:#f6f0df;padding:15px max(22px,calc((100vw - 1450px)/2));display:flex;align-items:center;justify-content:space-between;gap:18px;box-shadow:0 4px 12px #15291d22}.top h1{font-family:Georgia,serif;font-size:clamp(24px,2.8vw,37px);margin:2px 0 0;font-weight:500;letter-spacing:.01em}.eyebrow{font-size:10px;letter-spacing:.16em;text-transform:uppercase;font-weight:800;color:#8c7651}.top .eyebrow{color:#c9b789}.topright{display:flex;align-items:center;gap:18px}.topstatus{font-size:12px;color:#d9ddc9}.outline{background:transparent;border:1px solid #8d9a8b;color:inherit}.top button{border-radius:9px;padding:10px 14px}.tools{background:#e3e6d9;border-bottom:1px solid #c5cfbd;padding:16px max(22px,calc((100vw - 1450px)/2));font-size:14px}.tools[hidden],.landmarkInfo[hidden]{display:none}.buttonrow{display:flex;flex-wrap:wrap;gap:10px}.buttonrow button{padding:10px;border:1px solid #9baa99;background:#fff;border-radius:7px;color:#26372d}.buttonrow .danger{border-color:#a77565;color:#873f31}.shell{max-width:1450px;margin:0 auto;padding:22px}.landscape{background:#fffdf5;border:1px solid #d5d2bd;border-radius:15px;overflow:hidden;box-shadow:0 8px 22px #40513d13}.maptop{padding:19px 23px 14px;display:flex;justify-content:space-between;align-items:center;gap:20px}.maptop h2{font:normal clamp(24px,3vw,34px) Georgia,serif;margin:5px 0;color:#2e4635}.maptop p{font-size:13px;line-height:1.45;color:#5b695c;margin:0;max-width:850px}.yearpill{background:#e7e6d5;border:1px solid #c7c8ac;color:#4d5d4b;border-radius:99px;padding:9px 13px;white-space:nowrap;font-size:11px;font-weight:800;letter-spacing:.09em}.mapframe{position:relative;margin:0 16px;border:7px solid #e4ddc5;border-radius:12px;overflow:hidden;box-shadow:inset 0 0 0 2px #8c9d78}.map{position:relative;width:100%;aspect-ratio:900/500;overflow:hidden;background:#93af7e}.mapart,.mapart svg{position:absolute;inset:0;width:100%;height:100%}.mapart svg{display:block}.hotspot{position:absolute;transform:translate(-50%,-50%);border:2px solid #fff9dc;background:#274e3ce8;color:#fffce8;border-radius:22px;padding:7px 12px;box-shadow:0 3px 10px #18392780;font-size:clamp(10px,1vw,13px);font-weight:750;white-space:nowrap;transition:transform .16s,background .16s}.hotspot:hover{transform:translate(-50%,-50%) scale(1.09);background:#426d4f}.landmarkInfo{position:absolute;right:14px;bottom:47px;max-width:min(340px,80%);background:#fffdf0f5;border:1px solid #a8b08e;border-radius:10px;padding:16px 35px 12px 15px;box-shadow:0 5px 20px #1b382c50;z-index:4}.landmarkInfo strong{font-family:Georgia,serif;font-size:20px}.landmarkInfo p{font-size:13px;line-height:1.5;margin:8px 0 0}.landmarkInfo button{position:absolute;right:8px;top:7px;border:0;background:transparent;font-size:22px;color:#38513d}.maplegend{position:absolute;left:13px;bottom:12px;border-radius:6px;background:#f8f3e4e8;padding:7px 11px;font-size:11px;color:#445641;box-shadow:0 1px 5px #24402430}.resourceband{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:1px;background:#d7dbc9;border-top:1px solid #d4d7c6}.resitem{padding:14px 20px;background:#fafaf2;display:grid;grid-template-columns:1fr auto;gap:5px 8px}.resname{font-size:13px;font-weight:750}.resvalue{font-size:14px;font-weight:800;color:#42684a}.resbar{display:flex;gap:4px;grid-column:1/-1}.resbar span{height:7px;border-radius:3px;background:#d7ddcc;flex:1}.resbar span.filled{background:#729d6b}.resdesc{grid-column:1/-1;color:#6e786b;font-size:10px}.below{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(260px,.85fr);gap:18px;margin-top:20px;align-items:start}.panel{background:#fffdf7;border:1px solid #d7d2c2;border-radius:12px;padding:26px;box-shadow:0 4px 15px #3b4b3510}.story h2{font:normal clamp(27px,2.5vw,35px) Georgia,serif;color:#2c4736;margin:8px 0 16px}.story h3{font:normal 22px Georgia,serif;margin:19px 0 9px}.story p{font-size:15px;line-height:1.68;color:#3d493e}.story blockquote{border-left:4px solid #c5a76d;background:#f5f1e7;padding:14px 18px;margin:18px 0;line-height:1.65;font-size:14px}.hint{color:#677365!important;font-size:13px!important;line-height:1.5!important}.stepbar{margin-bottom:20px}.steptrack{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}.steptrack span{height:5px;border-radius:8px;background:#e4e5da}.steptrack span.active{background:#5c865e}.field{margin:18px 0 8px}.field label{display:block;font-weight:750;font-size:14px;margin-bottom:7px}.field input{width:100%;border:1px solid #a8b4a5;border-radius:8px;padding:13px;background:white;color:#283d2e}.actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:23px}.actions button,.story>.primary,.story>.outline{border-radius:8px;padding:12px 20px;font-weight:750;margin:10px 6px 0 0}.primary{border:1px solid #2c5940;background:#2c5940;color:#fff}.story .outline{border:1px solid #a2ac9a;color:#354c3c;background:white}.chips{display:flex;gap:7px;flex-wrap:wrap;margin:8px 0 15px}.chip{background:#e9ecde;border:1px solid #b8c6b0;border-radius:22px;padding:6px 12px;font-size:12px;color:#354b3b}.geocard{border:1px solid #c2cbb4;background:#edf0e4;padding:14px 17px;border-radius:8px;font:normal 23px Georgia,serif;color:#36563b;margin:14px 0}.starting{display:flex;flex-wrap:wrap;gap:8px}.starting span{background:#f0f1e9;padding:8px 11px;border-radius:6px;font-size:12px}.prioritygrid,.options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:17px 0}.prioritycard,.choice{text-align:left;border:2px solid #d6ddcc;background:#fafaf5;color:#2c3e31;padding:16px;border-radius:10px;display:flex;flex-direction:column;gap:8px;line-height:1.4}.prioritycard strong,.choice strong{font-size:15px}.prioritycard span,.choice span{font-size:12px;color:#627062}.prioritycard small{color:#56714f}.prioritycard.selected,.choice.selected{border-color:#447b53;background:#eaf1e5;box-shadow:0 0 0 1px #447b53}.effect{background:#e7efe1;border-left:4px solid #588b5d;padding:12px 14px;border-radius:5px;font-weight:700}.historyhead{border-bottom:1px solid #e2dfd1;padding-bottom:12px}.history h2{font:normal 25px Georgia,serif;margin:0 0 7px}.entry{border-bottom:1px solid #e1e1d6;padding:16px 0}.entry h3{font:normal 18px Georgia,serif;margin:7px 0}.entry p{font-size:13px;line-height:1.55;margin:6px 0}.error{color:#a13c2d!important;font-weight:700;font-size:13px!important}footer{text-align:center;font-size:11px;color:#6c766b;padding:18px}.story>.primary{margin-top:14px}@media(max-width:850px){.below{grid-template-columns:1fr}.shell{padding:12px}.maptop{padding:15px;align-items:flex-start}.top{padding:12px 16px}.topstatus{display:none}.resourceband{grid-template-columns:repeat(2,1fr)}.hotspot{font-size:10px;padding:5px 8px}.panel{padding:20px}.mapframe{margin:0 8px;border-width:4px}}@media(max-width:500px){.yearpill{display:none}.prioritygrid,.options{grid-template-columns:1fr}.maplegend{font-size:9px}.hotspot{font-size:9px;padding:4px 6px}.resitem{padding:10px}.top h1{font-size:23px}}
+
+/* Stage 1.6: painted, interactive village overview */
+.map{aspect-ratio:1672/941;background:#66845b}
+.mapart img.villagepainting{display:block;width:100%;height:100%;object-fit:cover;user-select:none}
+.mapart .changes{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hotspot{background:#244432dc;border:1px solid #fff4c8;box-shadow:0 2px 9px #142f23aa, inset 0 1px 0 #ffffff30;backdrop-filter:blur(3px);font-family:Georgia,serif;font-size:clamp(11px,1.05vw,14px)}
+.hotspot:hover,.hotspot:focus-visible{background:#476f4c}
+.mapframe{border-color:#cdbb8e;box-shadow:0 3px 18px #283a2d36}
+.maplegend{background:#fff9e9e8;font-weight:650}
+@media(max-width:650px){.hotspot{font-size:10px;padding:4px 6px}}
+/* Stage 2: keep historical writing prompts readable. */
+.story textarea{display:block;width:100%;min-height:110px;margin:10px 0 14px;padding:12px;border:1px solid #9b9b86;border-radius:9px;background:#fffdf5;color:#23332c;font:inherit;resize:vertical}
+.story details{margin:14px 0;padding:10px 14px;border:1px solid #c5c2ac;border-radius:8px;background:#f8f5e9}
+.story details summary{cursor:pointer;font-weight:700}
+.story .echo{border-left:4px solid #9e7c3b;padding:10px 14px;background:#f8f0d9;font-weight:600}
+
+/* Stage 2.1: expandable, independently scrollable Chronicle and visible primary source. */
+.history{padding:0;overflow:hidden}
+.chronicleDisclosure>summary{cursor:pointer;list-style:none;padding:20px 22px;display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;background:#f7f5eb}
+.chronicleDisclosure>summary::-webkit-details-marker{display:none}
+.chronicleDisclosure>summary::after{content:'▸';font-size:21px;color:#49634c}
+.chronicleDisclosure[open]>summary::after{content:'▾'}
+.chronicleSummaryTitle{font:normal 24px Georgia,serif;color:#2c4736}
+.chronicleSummaryHint{font-size:11px;color:#60715f}
+.historyhead{padding:12px 20px}
+.chronicleScroll{max-height:360px;overflow-y:auto;overscroll-behavior:contain;padding:0 20px 16px;scrollbar-color:#9aa88d #efeee3;scrollbar-width:thin}
+.chronicleScroll:focus-visible{outline:3px solid #d69c46;outline-offset:-3px}
+.sourceexcerpt{border:1px solid #b8ae8d;border-radius:9px;background:#f8f3e6;padding:15px 17px;margin:15px 0}
+.sourceexcerpt blockquote{background:#fffaf0;margin:12px 0;border-left-color:#977743;font-family:Georgia,serif;font-size:16px}
+.sourcecredit{font-size:12px!important;color:#697064!important;line-height:1.5!important}
+
+/* Stage 2.2: source-help vocabulary and clearly separated guidance. */
+.sourceHelp .helpSection{padding:10px 0}
+.sourceHelp .helpSection+.helpSection{border-top:1px solid #d8d1ba}
+.sourceHelp h4{font-size:14px;margin:0 0 9px;color:#334c3b}
+.sourceHelp .vocabList{margin:0}
+.sourceHelp .vocabEntry{display:flex;gap:5px;flex-wrap:wrap;margin:6px 0;font-size:14px;line-height:1.5}
+.sourceHelp dt{font-weight:750}
+.sourceHelp dd{margin:0;font-weight:400}
+.sourceHelp .helpSection p{margin:0;font-size:14px;line-height:1.6}
+
+/* Survival events */
+.story .echo{border-left:4px solid #a47c45;background:#f7edda;padding:12px 14px;border-radius:5px}
+.story .choice.selected{outline:3px solid #b38d4c;outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* Stage 3.6 survival status, warnings, and teacher test controls */
+.survivalStatus{padding:10px 18px;font-size:13px;font-weight:800;letter-spacing:.01em;background:#e9ede0;color:#355b3c}
+.survivalStatus.warning{background:#fff0c8;color:#775018}
+.survivalStatus.critical{background:#f8d9ce;color:#82352b}
+.testPanel{padding:12px;border:2px dashed #a76c46;margin:10px 0;background:#fff6e7;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.testPanel[hidden]{display:none}
+.testPanel button{padding:7px 9px;border-radius:6px;background:#fff;color:#5e3b2e;border:1px solid #a76c46}
+.resitem:has(.resvalue){transition:background .2s}
+
+/* Stage 3.8: map-first experience with floating story/Chronicle panels. */
+.mapframe{isolation:isolate;overflow:hidden}
+.map{min-height:420px}
+.villageTabs{position:absolute;top:12px;left:12px;display:flex;flex-wrap:wrap;gap:5px;z-index:8;background:#f8f3e7ed;padding:5px;border-radius:11px;box-shadow:0 4px 15px #152b2180}
+.villageTab{border:1px solid transparent;border-radius:7px;background:transparent;color:#344c39;padding:9px 12px;font-size:13px;font-weight:800}
+.villageTab.active{background:#244b36;color:white}.tabDot{color:#d7a54e;font-size:9px;margin-left:4px}
+.floatingPanel{position:absolute;z-index:7;right:12px;top:12px;bottom:12px;width:min(510px,56%);background:#fffdf4f5;backdrop-filter:blur(7px);border:1px solid #c6b68d;border-radius:12px;box-shadow:0 9px 30px #15271ca6;display:flex;flex-direction:column;overflow:hidden}
+.floatingPanel[hidden],.mapNotice[hidden]{display:none}
+.floatingHead{flex:0 0 auto;display:flex;justify-content:space-between;align-items:center;padding:10px 15px;background:#e7e3d1;border-bottom:1px solid #c8c4ac;color:#344d3c;font-size:13px}
+.floatingHead button{border:0;background:transparent;font-size:23px;color:#405644;padding:0 5px}
+.storyFloat .story{border:0;box-shadow:none;border-radius:0;background:transparent;padding:17px 22px 25px;overflow-y:auto;overscroll-behavior:contain;min-height:0;flex:1}
+.storyFloat .story h2{font-size:clamp(23px,2vw,30px)}.storyFloat .story p{font-size:14px;line-height:1.55}
+.storyFloat .options,.storyFloat .prioritygrid{grid-template-columns:1fr}
+.storyFloat .choice{padding:12px;gap:6px}.storyFloat .story blockquote{margin:12px 0;padding:10px 13px}
+.chronicleFloat .historyhead{padding:13px 17px}.chronicleFloat .chronicleScroll{max-height:none;flex:1;padding:0 17px 20px}
+.mapNotice{position:absolute;z-index:9;bottom:48px;left:50%;transform:translateX(-50%);width:min(480px,90%);background:#fff9e9f7;border:2px solid #bd9855;border-radius:10px;box-shadow:0 6px 22px #203a29a0;padding:12px 44px 12px 15px;font-size:13px;color:#354b3b}
+.mapNotice p{margin:5px 0 10px;line-height:1.45}.mapNotice button{background:#2e5840;color:white;border:0;border-radius:5px;padding:7px 10px;font-size:12px}.mapNotice #noticeDismiss{position:absolute;right:7px;top:7px;background:transparent;color:#36513c;font-size:19px;padding:0 6px}
+.landmarkInfo{z-index:10;bottom:52px;left:14px;right:auto;max-width:min(350px,45%)}
+.maplegend{z-index:2}.hotspot{z-index:3}
+@media(max-width:850px){.map{min-height:490px}.floatingPanel{width:min(460px,65%)}.villageTabs{top:8px;left:8px}.villageTab{padding:8px;font-size:12px}}
+@media(max-width:650px){.map{min-height:620px;aspect-ratio:auto}.mapart{height:65%;bottom:auto}.mapart img.villagepainting{object-fit:cover}.hotspot{top:auto}.floatingPanel{left:8px;right:8px;top:51%;bottom:8px;width:auto}.floatingPanel .story{padding:10px 13px 18px}.villageTabs{max-width:calc(100% - 16px)}.landmarkInfo{left:8px;right:8px;bottom:42%;max-width:none}.mapNotice{bottom:42%;width:95%}.maplegend{bottom:8px}}
+@media(prefers-reduced-motion:reduce){.floatingPanel{backdrop-filter:none}}
+
+/* Preserve geographic positions of landmark hotspots on small screens. */
+@media(max-width:650px){.map{aspect-ratio:1672/941;min-height:0}.mapart{height:100%;bottom:0}.floatingPanel{top:35%;bottom:8px}.landmarkInfo,.mapNotice{bottom:40%}}
